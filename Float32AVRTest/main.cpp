@@ -2041,6 +2041,59 @@ void fadd_nonzero_zero() {
     print_float_as_hex(&r);
 }
 
+//
+// Реализация из z88dk. [https://z88dk.org/site/]
+// Версия с float и нашими модификациями: "лишний" код, устранение переполнения для граничных случаев.
+void ftoa_float_mod(float num, int precision, char* str) {
+    float order;            
+    int i;                  
+    int digit;              
+
+    if (num < 0.0f) {
+        *str++ = '-';
+        num = -num;
+    }
+    i = 1;
+    order = 1.0f;
+    float numDownScale = num * 0.1f; // Чтобы избежать переполнения.
+    while (numDownScale >= order) {
+        order *= 10.0f;
+        i++;
+    }
+
+    while (i--) {
+        digit = num / order;
+        *str++ = digit + '0';
+        num = num - ((float)digit * order);
+        order = order * 0.1f;
+    }
+    if (precision <= 0) {
+        *str = 0;
+        return;
+    }
+    *str++ = '.';
+    while (precision--) {
+        num *= 10.0f;
+        digit = num;
+        *str++ = digit + '0';
+        num -= (float)digit;
+    }
+    *str = 0;
+}
+
+// Проверка ftoa
+void ftoa_case_1() {
+    float a = (powf(2, 24) - 1) * powf(2, -23);
+    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 14, str);
+    std::cout << str << '\n';
+}
+
 int main() {
     //hex_to_float();
     //loop_through_normalized_float();
@@ -2125,11 +2178,14 @@ int main() {
     //sub_case_20();
     //sub_case_33();
     //sub_case_34();
-    sub_case_36();
+    //sub_case_36();
 
     //fadd_swap();
-    
+
     //fadd_zero_zero();
     //fadd_zero_nonzero();
     //fadd_nonzero_zero();
+
+    // Тесты для ftoa.
+    ftoa_case_1();
 }
