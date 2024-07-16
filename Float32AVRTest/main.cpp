@@ -794,6 +794,33 @@ void mul_case_19_return_to_normal() {
     print_float_as_hex(&r);
 }
 
+// Пример 20.
+//
+// BUGFIX:
+// Этот пример даёт округление в меньшую сторону.
+// В ветке округления после любого направления округления
+// управление передавалось в код проверки переполнения при округлении.
+// На этом примере с предыдущих операций остался бит переноса, который
+// интерпретировался как переполнение при округлении (хотя фактически его и не было)
+// что приводило к нормализации и коррекции экспоненты и следовательно к некорректному результату.
+void mul_case_20_bugfix() {
+    float a = powf(10, 10);
+    float b = 10.0f;
+    float r = a * b;
+
+    std::cout << std::fixed << std::setprecision(150) << "a=" << a << std::endl;
+    std::cout << std::fixed << std::setprecision(150) << "b=" << b << std::endl;
+    std::cout << std::fixed << std::setprecision(150) << "r=" << r << std::endl;
+
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(r) << std::endl;
+
+    std::cout << std::endl;
+
+    print_float_as_hex(&a);
+    print_float_as_hex(&b);
+    print_float_as_hex(&r);
+}
+
 // Алгебраическое сложение.
 // Одинаковые знаки, положительные.
 // Равные порядки, неравные мантиссы.
@@ -2041,13 +2068,32 @@ void fadd_nonzero_zero() {
     print_float_as_hex(&r);
 }
 
+// Пример, в котором A>B, но A-B даст нулевую разность, если нет поддержки денормализованных чисел.
+// К вопросу о том, почему при сравнении двух флоатов на равенство лучше вычислять разность их целочисленных упакованных
+// представлений, нежели их разность непосредственно во float.
+void zero_diff() {
+    float a = ((1 + powf(2, -23)) * powf(2, -126));
+    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+
+    float b = powf(2, -126);
+    std::cout << std::fixed << std::setprecision(100) << b << "\n";
+    print_float_as_hex(&b);
+    std::cout << '\n';
+
+    float c = a - b;
+    std::cout << std::fixed << std::setprecision(100) << c << "\n";
+    print_float_as_hex(&c);
+}
+
 //
 // Реализация из z88dk. [https://z88dk.org/site/]
 // Версия с float и нашими модификациями: "лишний" код, устранение переполнения для граничных случаев.
 void ftoa_float_mod(float num, int precision, char* str) {
-    float order;            
-    int i;                  
-    int digit;              
+    float order;
+    int i;
+    int digit;
 
     if (num < 0.0f) {
         *str++ = '-';
@@ -2060,6 +2106,8 @@ void ftoa_float_mod(float num, int precision, char* str) {
         order *= 10.0f;
         i++;
     }
+
+    print_float_as_hex(&order);
 
     while (i--) {
         digit = num / order;
@@ -2081,9 +2129,29 @@ void ftoa_float_mod(float num, int precision, char* str) {
     *str = 0;
 }
 
-// Проверка ftoa
+// Проверка ftoa.
+// Пример 1.
 void ftoa_case_1() {
-    float a = (powf(2, 24) - 1) * powf(2, -23);
+    /*float a = (powf(2, 24) - 1) * powf(2, -23);
+    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 14, str);
+    std::cout << str << '\n';*/
+
+    float a = ((powf(2, 24) - 1) * powf(2, -23)) / 10;
+    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    print_float_as_hex(&a);
+}
+
+// Проверка ftoa
+// Пример 2.
+void ftoa_case_2() {
+    float a = (powf(2, 24) - 1) * powf(2, -23) * powf(2, 127);
+    //float a = ((powf(2, 24) - 1) * powf(2, -23) * powf(2, 127)) / 10;
     std::cout << std::fixed << std::setprecision(100) << a << "\n";
     print_float_as_hex(&a);
 
@@ -2092,6 +2160,13 @@ void ftoa_case_1() {
     char str[255];
     ftoa_float_mod(a, 14, str);
     std::cout << str << '\n';
+
+    /*uint32_t intRep = 0x7ec515ed;
+    uint32_t* p = &intRep;
+    float float_from_hex = *(float*)p;
+    float_from_hex *= 10;
+    std::cout << std::fixed << std::setprecision(100) << float_from_hex << "\n";
+    print_float_as_hex(&float_from_hex);*/
 }
 
 int main() {
@@ -2133,6 +2208,7 @@ int main() {
     //mul_case_17();
     //mul_case_18();
     //mul_case_19_return_to_normal();
+    //mul_case_20_bugfix();
 
     // Алгебраическое сложение: одинаковые знаки.
     // 
@@ -2187,5 +2263,8 @@ int main() {
     //fadd_nonzero_zero();
 
     // Тесты для ftoa.
-    ftoa_case_1();
+    //ftoa_case_1();
+    ftoa_case_2();
+
+    //zero_diff();
 }
