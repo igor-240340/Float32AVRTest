@@ -2107,13 +2107,48 @@ void ftoa_float_mod(float num, int precision, char* str) {
         i++;
     }
 
+    // begin: debug.
+    std::cout << "order:\t";
     print_float_as_hex(&order);
+    // end: debug.
 
     while (i--) {
+        // begin: debug.
+        std::cout << "\nnum/order:\t";
+        float num_order = num / order;
+        print_float_as_hex(&num_order);
+        // end: debug.
+
         digit = num / order;
         *str++ = digit + '0';
+
+        // begin: debug.
+        std::cout << "(float)digit:\t";
+        float digit_float = (float)digit;
+        print_float_as_hex(&digit_float);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "digit*order:\t";
+        float digit_order = (float)digit * order;
+        print_float_as_hex(&digit_order);
+        // end: debug.
+
         num = num - ((float)digit * order);
-        order = order * 0.1f;
+        //order = order * 0.1f;
+        // В float32avr умножение и деление эквивалентны в плане алгоритмической сложности, поэтому используем просто деление.
+        // В эталонной реализации тоже меняем на деление для сверки результатов.
+        order = order / 10.0f; 
+
+        // begin: debug.
+        std::cout << "num-(d*order):\t";
+        print_float_as_hex(&num);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "order/10:\t";
+        print_float_as_hex(&order);
+        // end: debug.
     }
     if (precision <= 0) {
         *str = 0;
@@ -2127,6 +2162,35 @@ void ftoa_float_mod(float num, int precision, char* str) {
         num -= (float)digit;
     }
     *str = 0;
+}
+
+// К вопросу о различии эталонной десктопной реализации ftoa
+// и реализации на AVR из-за того, что float32avr не поддерживает
+// денормализованные числа.
+void denormals_ftoa() {
+    //float a = 1.0f + powf(2, -23);
+    //float a = 1056.0f + powf(2, -23);
+    float a = powf(2, -23) * powf(2, -126);
+    /*float a = (powf(2, 23) - 1) * powf(2, -23) * powf(2, -126);
+    float a = (powf(2, 23) - 1) * powf(2, -23) * powf(2, -126);*/
+    std::cout << std::fixed << std::setprecision(200) << a << "\n";
+    print_float_as_hex(&a);
+
+    char str[255];
+    ftoa_float_mod(a, 100, str);
+    std::cout << str << '\n';
+
+    /*std::cout << '\n';
+
+    float b = a - 1.0f;
+    std::cout << std::fixed << std::setprecision(100) << b << "\n";
+    print_float_as_hex(&b);*/
+
+    std::cout << '\n';
+
+    float c = a * 10.0f;
+    std::cout << std::fixed << std::setprecision(100) << c << "\n";
+    print_float_as_hex(&c);
 }
 
 // Проверка ftoa.
@@ -2159,6 +2223,7 @@ void ftoa_case_2() {
 
     char str[255];
     ftoa_float_mod(a, 14, str);
+    std::cout << '\n';
     std::cout << str << '\n';
 
     /*uint32_t intRep = 0x7ec515ed;
@@ -2167,6 +2232,21 @@ void ftoa_case_2() {
     float_from_hex *= 10;
     std::cout << std::fixed << std::setprecision(100) << float_from_hex << "\n";
     print_float_as_hex(&float_from_hex);*/
+}
+
+// Проверка ftoa
+// Пример 3.
+void ftoa_case_3() {
+    float a = (powf(2, 24) - 1) * powf(2, -23);
+    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 14, str);
+    std::cout << '\n';
+    std::cout << str << '\n';
 }
 
 int main() {
@@ -2264,7 +2344,10 @@ int main() {
 
     // Тесты для ftoa.
     //ftoa_case_1();
-    ftoa_case_2();
+    //ftoa_case_2();
+    ftoa_case_3();
 
     //zero_diff();
+
+    //denormals_ftoa();
 }
