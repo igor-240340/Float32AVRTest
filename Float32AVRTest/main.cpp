@@ -2196,7 +2196,7 @@ void denormals_ftoa() {
 // Проверка ftoa.
 // Пример 1.
 void ftoa_case_1() {
-    /*float a = (powf(2, 24) - 1) * powf(2, -23);
+    float a = 0.5f;
     std::cout << std::fixed << std::setprecision(100) << a << "\n";
     print_float_as_hex(&a);
 
@@ -2204,18 +2204,13 @@ void ftoa_case_1() {
 
     char str[255];
     ftoa_float_mod(a, 14, str);
-    std::cout << str << '\n';*/
-
-    float a = ((powf(2, 24) - 1) * powf(2, -23)) / 10;
-    std::cout << std::fixed << std::setprecision(100) << a << "\n";
-    print_float_as_hex(&a);
+    std::cout << str << '\n';
 }
 
 // Проверка ftoa
 // Пример 2.
 void ftoa_case_2() {
     float a = (powf(2, 24) - 1) * powf(2, -23) * powf(2, 127);
-    //float a = ((powf(2, 24) - 1) * powf(2, -23) * powf(2, 127)) / 10;
     std::cout << std::fixed << std::setprecision(100) << a << "\n";
     print_float_as_hex(&a);
 
@@ -2225,13 +2220,6 @@ void ftoa_case_2() {
     ftoa_float_mod(a, 14, str);
     std::cout << '\n';
     std::cout << str << '\n';
-
-    /*uint32_t intRep = 0x7ec515ed;
-    uint32_t* p = &intRep;
-    float float_from_hex = *(float*)p;
-    float_from_hex *= 10;
-    std::cout << std::fixed << std::setprecision(100) << float_from_hex << "\n";
-    print_float_as_hex(&float_from_hex);*/
 }
 
 // Проверка ftoa
@@ -2344,8 +2332,8 @@ int main() {
 
     // Тесты для ftoa.
     //ftoa_case_1();
-    //ftoa_case_2();
-    ftoa_case_3();
+    ftoa_case_2();
+    //ftoa_case_3();
 
     //zero_diff();
 
