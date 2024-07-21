@@ -2138,7 +2138,7 @@ void ftoa_float_mod(float num, int precision, char* str) {
         //order = order * 0.1f;
         // В float32avr умножение и деление эквивалентны в плане алгоритмической сложности, поэтому используем просто деление.
         // В эталонной реализации тоже меняем на деление для сверки результатов.
-        order = order / 10.0f; 
+        order = order / 10.0f;
 
         // begin: debug.
         std::cout << "num-(d*order):\t";
@@ -2155,11 +2155,27 @@ void ftoa_float_mod(float num, int precision, char* str) {
         return;
     }
     *str++ = '.';
+
+    // begin: debug.
+    std::cout << "\nnum:\t";
+    print_float_as_hex(&num);
+    // end: debug.
+
     while (precision--) {
+        // begin: debug.
         num *= 10.0f;
+        std::cout << "\nnum*=10.0f:\t";
+        print_float_as_hex(&num);
+        // end: debug.
+
         digit = num;
         *str++ = digit + '0';
+
+        // begin: debug.
+        std::cout << "num-=digit:\t";
         num -= (float)digit;
+        print_float_as_hex(&num);
+        // end: debug.
     }
     *str = 0;
 }
@@ -2196,43 +2212,117 @@ void denormals_ftoa() {
 // Проверка ftoa.
 // Пример 1.
 void ftoa_case_1() {
-    float a = 0.5f;
-    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    float a = powf(2, -126);
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
     print_float_as_hex(&a);
 
     std::cout << '\n';
 
     char str[255];
-    ftoa_float_mod(a, 14, str);
+    ftoa_float_mod(a, 62, str);
     std::cout << str << '\n';
 }
 
-// Проверка ftoa
+// Проверка ftoa.
 // Пример 2.
 void ftoa_case_2() {
-    float a = (powf(2, 24) - 1) * powf(2, -23) * powf(2, 127);
-    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    float a = (powf(2, 24) - 1) * powf(2, -24);
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
     print_float_as_hex(&a);
 
     std::cout << '\n';
 
     char str[255];
-    ftoa_float_mod(a, 14, str);
-    std::cout << '\n';
+    ftoa_float_mod(a, 23, str);
     std::cout << str << '\n';
 }
 
 // Проверка ftoa
 // Пример 3.
 void ftoa_case_3() {
-    float a = (powf(2, 24) - 1) * powf(2, -23);
+    float a = 1.0f;
     std::cout << std::fixed << std::setprecision(100) << a << "\n";
     print_float_as_hex(&a);
 
     std::cout << '\n';
 
     char str[255];
-    ftoa_float_mod(a, 14, str);
+    ftoa_float_mod(a, 2, str);
+    std::cout << '\n';
+    std::cout << str << '\n';
+}
+
+// Проверка ftoa
+// Пример 4.
+void ftoa_case_4() {
+    float a = 10.0f - powf(2, -23) * powf(2, 3);
+    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 22, str);
+    std::cout << '\n';
+    std::cout << str << '\n';
+}
+
+// Проверка ftoa
+// Пример 5.
+void ftoa_case_5() {
+    float a = 10.0f;
+    std::cout << std::fixed << std::setprecision(100) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 2, str);
+    std::cout << '\n';
+    std::cout << str << '\n';
+}
+
+// Проверка ftoa
+// Пример 6.
+void ftoa_case_6() {
+    float a = (powf(2, 24) - 1) * powf(2, -23) * powf(2, 127);
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 21, str);
+    std::cout << '\n';
+    std::cout << str << '\n';
+}
+
+// Проверка ftoa
+// Пример 7.
+void ftoa_case_7() {
+    float a = -117926.1328125f;
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 8, str);
+    std::cout << '\n';
+    std::cout << str << '\n';
+}
+
+// Проверка ftoa
+// Пример 8.
+void ftoa_case_8() {
+    float a = 0.0f;
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoa_float_mod(a, 8, str);
     std::cout << '\n';
     std::cout << str << '\n';
 }
@@ -2332,8 +2422,13 @@ int main() {
 
     // Тесты для ftoa.
     //ftoa_case_1();
-    ftoa_case_2();
+    //ftoa_case_2();
     //ftoa_case_3();
+    //ftoa_case_4();
+    //ftoa_case_5();
+    //ftoa_case_6();
+    //ftoa_case_7();
+    //ftoa_case_8();
 
     //zero_diff();
 
