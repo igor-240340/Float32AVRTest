@@ -2214,11 +2214,6 @@ float atof_kr_float(char s[]) {
         // end: отладка atof_case_7().
 
         // begin: debug.
-        std::cout << "num:                \t";
-        print_float_as_hex(&num);
-        // end: debug.
-
-        // begin: debug.
         std::cout << "10.0f * num:        \t";
         float t = 10.0f * num;
         print_float_as_hex(&t);
@@ -2247,21 +2242,22 @@ float atof_kr_float(char s[]) {
 
     for (overscale = 1.0f; isdigit(s[i]); i++) {
         // begin: debug.
-        std::cout << "overscale:          \t";
-        print_float_as_hex(&overscale);
-        // end: debug.
-        
-        // begin: debug.
-        std::cout << "num:                \t";
-        print_float_as_hex(&num);
-        // end: debug.
-
-        // begin: debug.
         std::cout << "10.0f * num:        \t";
         float t = 10.0f * num;
         print_float_as_hex(&t);
         // end: debug.
 
+        // begin: debug.
+        std::cout << "overscale:          \t";
+        print_float_as_hex(&overscale);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "overscale*=10.0f:   \t";
+        t = overscale * 10.0f;
+        print_float_as_hex(&t);
+        // end: debug.
+        
         // begin: debug.
         std::cout << "float(digit):       \t";
         t = (s[i] - '0');
@@ -2274,11 +2270,6 @@ float atof_kr_float(char s[]) {
         // begin: debug.
         std::cout << "10.0f * num + digit:\t";
         print_float_as_hex(&num);
-        // end: debug.
-
-        // begin: debug.
-        std::cout << "overscale*=10.0f:   \t";
-        print_float_as_hex(&overscale);
         // end: debug.
 
         std::cout << '\n';
@@ -2535,7 +2526,7 @@ void atof_case_6() {
 // Переполнение по num.
 // Desktop: inf.
 // float32avr: исключение.
-void _atof_case_7() {
+void atof_case_7() {
     char num[] = "340282429999999999999999999999999999999.0";
     std::cout << "string: " << num << '\n';
     float a = atof_kr_float(num);
@@ -2625,6 +2616,58 @@ void atof_case_12() {
 // Переполнения нет.
 void atof_case_13() {
     char num[] = "297270070.293992768437644036421190501130";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_14() {
+    char num[] = "406.93306";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_15() {
+    char num[] = "70856.4138686531";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_16() {
+    char num[] = "0";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_17() {
+    char num[] = "0.00";
     std::cout << "string: " << num << '\n';
     float a = atof_kr_float(num);
     //float a = atof(num);
@@ -2773,12 +2816,17 @@ int main() {
     //atof_case_4();
     //atof_case_5();
     //atof_case_6();
+    //atof_case_7();
     //atof_case_8();
     //atof_case_9();
     //atof_case_10();
     //atof_case_11();
     //atof_case_12();
     //atof_case_13();
+    //atof_case_14();
+    //atof_case_15();
+    //atof_case_16();
+    atof_case_17();
     
     //atof_sandbox();
 
