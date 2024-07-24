@@ -8,6 +8,11 @@
 #include <chrono>
 #include <ctime>
 
+void print_float_as_hex(float* a) {
+    uint32_t intRep = *(uint32_t*)a;
+    std::cout << std::hex << std::setfill('0') << std::setw(8) << intRep << std::endl;
+}
+
 void hex_to_float() {
     uint32_t x = 0x3f9d70a4;
     float f = *((float*)&x);
@@ -45,11 +50,6 @@ void loop_through_normalized_float() {
     std::cout << "finished at " << std::ctime(&end_time)
         << "elapsed time: " << elapsed_seconds.count() << "s"
         << std::endl;
-}
-
-void print_float_as_hex(float* a) {
-    uint32_t intRep = *(uint32_t*)a;
-    std::cout << std::hex << std::setfill('0') << std::setw(8) << intRep << std::endl;
 }
 
 // Деление.
@@ -2088,7 +2088,7 @@ void zero_diff() {
 }
 
 //
-// Реализация из z88dk. [https://z88dk.org/site/]
+// Реализация из z88dk [https://z88dk.org/site/].
 // Версия с float и нашими модификациями: "лишний" код, устранение переполнения для граничных случаев.
 void ftoa_float_mod(float num, int precision, char* str) {
     float order;
@@ -2178,6 +2178,113 @@ void ftoa_float_mod(float num, int precision, char* str) {
         // end: debug.
     }
     *str = 0;
+}
+
+//
+// Модифицированная реализация atof from K&R, но только в пределах float.
+float atof_kr_float(char s[]) {
+    float num, overscale;
+    int i = 0, sign;
+
+    sign = (s[0] == '-') ? -1 : 1;
+
+    // begin: отладка atof_case_7().
+    //float val2 = 0.0f;
+    // end: отладка atof_case_7().
+
+    std::cout << "\ninteger part:\n";
+
+    for (num = 0.0f; isdigit(s[i]); i++) {
+        // begin: отладка atof_case_7().
+        /*std::cout << "val:               \t" << std::fixed << std::setprecision(152) << val << '\n';
+        std::cout << "10.0f * val:       \t" << std::fixed << std::setprecision(152) << 10.0f * val << '\n';
+        std::cout << "10.0f * val + s[i]:\t" << std::fixed << std::setprecision(152) << 10.0f * val + (s[i] - '0') << '\n';
+        val = 10.0f * val + (s[i] - '0');
+        std::cout << "val :\t" << std::fixed << std::setprecision(152) << val << '\n';
+
+        std::cout << '\n';
+
+        std::cout << "val2:              \t" << std::fixed << std::setprecision(152) << val2 << '\n';
+        std::cout << "10.0 * val2:       \t" << std::fixed << std::setprecision(152) << 10.0 * val2 << '\n';
+        std::cout << "10.0 * val2 + s[i]:\t" << std::fixed << std::setprecision(152) << 10.0 * val2 + (s[i] - '0') << '\n';
+        val2 = 10.0 * val2 + (s[i] - '0');
+        std::cout << "val2 :\t" << std::fixed << std::setprecision(152) << val2 << '\n';
+
+        std::cout << "---------------------\n";*/
+        // end: отладка atof_case_7().
+
+        // begin: debug.
+        std::cout << "num:                \t";
+        print_float_as_hex(&num);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "10.0f * num:        \t";
+        float t = 10.0f * num;
+        print_float_as_hex(&t);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "float(digit):       \t";
+        t = (s[i] - '0');
+        print_float_as_hex(&t);
+        // end: debug.
+
+        num = 10.0f * num + (s[i] - '0');
+
+        // begin: debug.
+        std::cout << "10.0f * num + digit:\t";
+        print_float_as_hex(&num);
+        // end: debug.
+
+        std::cout << '\n';
+    }
+
+    if (s[i] == '.')
+        i++;
+
+    std::cout << "\nfractional part:\n";
+
+    for (overscale = 1.0f; isdigit(s[i]); i++) {
+        // begin: debug.
+        std::cout << "overscale:          \t";
+        print_float_as_hex(&overscale);
+        // end: debug.
+        
+        // begin: debug.
+        std::cout << "num:                \t";
+        print_float_as_hex(&num);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "10.0f * num:        \t";
+        float t = 10.0f * num;
+        print_float_as_hex(&t);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "float(digit):       \t";
+        t = (s[i] - '0');
+        print_float_as_hex(&t);
+        // end: debug.
+
+        num = 10.0f * num + (s[i] - '0');
+        overscale *= 10.0f;
+
+        // begin: debug.
+        std::cout << "10.0f * num + digit:\t";
+        print_float_as_hex(&num);
+        // end: debug.
+
+        // begin: debug.
+        std::cout << "overscale*=10.0f:   \t";
+        print_float_as_hex(&overscale);
+        // end: debug.
+
+        std::cout << '\n';
+    }
+
+    return sign * num / overscale;
 }
 
 // К вопросу о различии эталонной десктопной реализации ftoa
@@ -2327,9 +2434,236 @@ void ftoa_case_8() {
     std::cout << str << '\n';
 }
 
+// Проверка atof.
+// Переполнение по overscale.
+// Desktop: 0.
+// float32avr: исключение.
+void atof_case_0() {
+    char num[] = "0.000000000000000000000000000000000000009";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Переполнения нет.
+// Desktop: денормализованное.
+// float32avr: 0.
+void atof_case_1() {
+    char num[] = "0.00000000000000000000000000000000000001";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_2() {
+    char num[] = "0.00000000000000000000000000000000000002";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Переполнение по overscale.
+// Desktop: 0.
+// float32avr: исключение.
+void atof_case_3() {
+    char num[] = "0.340282429999999999999999999999999999999";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_4() {
+    char num[] = "3.40282429999999999999999999999999999999";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_5() {
+    char num[] = "340282429999999999.999999999999999999999";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_6() {
+    char num[] = "340282429999999999999999999999999999999";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнение по num.
+// Desktop: inf.
+// float32avr: исключение.
+void _atof_case_7() {
+    char num[] = "340282429999999999999999999999999999999.0";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнение по num и по overscale.
+// Desktop: nan.
+// float32avr: исключение при переполнении по num.
+void atof_case_8() {
+    char num[] = "0.340282430000000000000000000000000000000";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнение по num.
+// Desktop: inf.
+// float32avr: исключение.
+void atof_case_9() {
+    char num[] = "3.40282430000000000000000000000000000000";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнение по num.
+// Desktop: inf.
+// float32avr: исключение.
+void atof_case_10() {
+    char num[] = "3402824300000000.00000000000000000000000";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнение по num.
+// Desktop: inf.
+// float32avr: исключение.
+void atof_case_11() {
+    char num[] = "340282430000000000000000000000000000000";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнение по num.
+// Desktop: inf.
+// float32avr: исключение.
+void atof_case_12() {
+    char num[] = "11111111111111111.11111111111111111111119999";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << '\n';
+}
+
+// Проверка atof.
+// Переполнения нет.
+void atof_case_13() {
+    char num[] = "297270070.293992768437644036421190501130";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof
+// Просто несколько примеров на разные граничные случаи.
+void atof_sandbox() {
+    char num[] = "0.00000000000000000000000000000000000001"; // Нет переполнения.
+    //char num[] = "0.000000000000000000000000000000000000009"; // Переполнение только по overscale.
+    //char num[] = "0.999999999999999999999999999999999999999"; // Переполнение по overscale и по num.
+    //char num[] = "0.111111111111111111111111111111111111111"; // Переполнение только по overscale.
+    //char num[] = "9.99999999999999999999999999999999999999"; // Переполнение только по num.
+    //char num[] = "1.11111111111111111111111111111111111111"; // Нет переполнения.
+    //char num[] = "0.340282429999999999999999999999999999999"; // Переполнение только по overscale.
+    //char num[] = "3.40282429999999999999999999999999999999"; // Нет переполнения.
+    //char num[] = "3.40282430000000000000000000000000000000"; // Переполнение только по num.
+    //char num[] = "10000.0000000000000000000000000000000000"; // Нет переполнения.
+    //char num[] = "10000.00000000000000000000000000000000000"; // Переполнение только по num.
+    //char num[] = "340282429999999999999999999999999999999.0"; // Переполнение только по num.
+    //char num[] = "340282429999999999999999999999999999999"; // Нет переполнения.
+    //char num[] = "340282430000000000000000000000000000000"; // Переполнения только по num.
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
 int main() {
     //hex_to_float();
     //loop_through_normalized_float();
+    //zero_diff();
 
     //div_case_1();
     //div_case_2();
@@ -2429,8 +2763,24 @@ int main() {
     //ftoa_case_6();
     //ftoa_case_7();
     //ftoa_case_8();
-
-    //zero_diff();
-
     //denormals_ftoa();
+
+    // Тесты для atof.    
+    //atof_case_0();
+    //atof_case_1();
+    //atof_case_2();
+    //atof_case_3();
+    //atof_case_4();
+    //atof_case_5();
+    //atof_case_6();
+    //atof_case_8();
+    //atof_case_9();
+    //atof_case_10();
+    //atof_case_11();
+    //atof_case_12();
+    //atof_case_13();
+    
+    //atof_sandbox();
+
+    return 0;
 }
