@@ -2089,8 +2089,8 @@ void zero_diff() {
 
 //
 // Реализация из z88dk [https://z88dk.org/site/].
-// Версия с float и нашими модификациями: "лишний" код, устранение переполнения для граничных случаев.
-void ftoa_float_mod(float num, int precision, char* str) {
+// Версия с float и нашими модификациями: "лишний" код, устранение переполнения для граничного случая.
+void ftoa_float_mod(float num, int precision, char* str, bool debug = true) {
     float order;
     int i;
     int digit;
@@ -2108,30 +2108,38 @@ void ftoa_float_mod(float num, int precision, char* str) {
     }
 
     // begin: debug.
-    std::cout << "order:\t";
-    print_float_as_hex(&order);
+    if (debug) {
+        std::cout << "order:\t";
+        print_float_as_hex(&order);
+    }
     // end: debug.
 
     while (i--) {
         // begin: debug.
-        std::cout << "\nnum/order:\t";
-        float num_order = num / order;
-        print_float_as_hex(&num_order);
+        if (debug) {
+            std::cout << "\nnum/order:\t";
+            float num_order = num / order;
+            print_float_as_hex(&num_order);
+        }
         // end: debug.
 
         digit = num / order;
         *str++ = digit + '0';
 
         // begin: debug.
-        std::cout << "(float)digit:\t";
-        float digit_float = (float)digit;
-        print_float_as_hex(&digit_float);
+        if (debug) {
+            std::cout << "(float)digit:\t";
+            float digit_float = (float)digit;
+            print_float_as_hex(&digit_float);
+        }
         // end: debug.
 
         // begin: debug.
-        std::cout << "digit*order:\t";
-        float digit_order = (float)digit * order;
-        print_float_as_hex(&digit_order);
+        if (debug) {
+            std::cout << "digit*order:\t";
+            float digit_order = (float)digit * order;
+            print_float_as_hex(&digit_order);
+        }
         // end: debug.
 
         num = num - ((float)digit * order);
@@ -2141,13 +2149,17 @@ void ftoa_float_mod(float num, int precision, char* str) {
         order = order / 10.0f;
 
         // begin: debug.
-        std::cout << "num-(d*order):\t";
-        print_float_as_hex(&num);
+        if (debug) {
+            std::cout << "num-(d*order):\t";
+            print_float_as_hex(&num);
+        }
         // end: debug.
 
         // begin: debug.
-        std::cout << "order/10:\t";
-        print_float_as_hex(&order);
+        if (debug) {
+            std::cout << "order/10:\t";
+            print_float_as_hex(&order);
+        }
         // end: debug.
     }
     if (precision <= 0) {
@@ -2157,24 +2169,32 @@ void ftoa_float_mod(float num, int precision, char* str) {
     *str++ = '.';
 
     // begin: debug.
-    std::cout << "\nnum:\t";
-    print_float_as_hex(&num);
+    if (debug) {
+        std::cout << "\nnum:\t";
+        print_float_as_hex(&num);
+    }
     // end: debug.
 
     while (precision--) {
-        // begin: debug.
         num *= 10.0f;
-        std::cout << "\nnum*=10.0f:\t";
-        print_float_as_hex(&num);
+
+        // begin: debug.
+        if (debug) {
+            std::cout << "\nnum*=10.0f:\t";
+            print_float_as_hex(&num);
+        }
         // end: debug.
 
         digit = num;
         *str++ = digit + '0';
 
-        // begin: debug.
-        std::cout << "num-=digit:\t";
         num -= (float)digit;
-        print_float_as_hex(&num);
+
+        // begin: debug.
+        if (debug) {
+            std::cout << "num-=digit:\t";
+            print_float_as_hex(&num);
+        }
         // end: debug.
     }
     *str = 0;
@@ -2182,17 +2202,22 @@ void ftoa_float_mod(float num, int precision, char* str) {
 
 //
 // Модифицированная реализация atof from K&R, но только в пределах float.
-float atof_kr_float(char s[]) {
+float atof_kr_float(char s[], bool debug = true) {
     float num, overscale;
-    int i = 0, sign;
+    int i = 0, sign = 1;
 
-    sign = (s[0] == '-') ? -1 : 1;
+    if (s[0] == '-') {
+        sign = -1;
+        i++;
+    }
 
     // begin: отладка atof_case_7().
     //float val2 = 0.0f;
     // end: отладка atof_case_7().
 
-    std::cout << "\ninteger part:\n";
+    if (debug) {
+        std::cout << "\ninteger part:\n";
+    }
 
     for (num = 0.0f; isdigit(s[i]); i++) {
         // begin: отладка atof_case_7().
@@ -2213,66 +2238,74 @@ float atof_kr_float(char s[]) {
         std::cout << "---------------------\n";*/
         // end: отладка atof_case_7().
 
-        // begin: debug.
-        std::cout << "10.0f * num:        \t";
-        float t = 10.0f * num;
-        print_float_as_hex(&t);
-        // end: debug.
+        if (debug) {
+            // begin: debug.
+            std::cout << "10.0f * num:        \t";
+            float t = 10.0f * num;
+            print_float_as_hex(&t);
+            // end: debug.
 
-        // begin: debug.
-        std::cout << "float(digit):       \t";
-        t = (s[i] - '0');
-        print_float_as_hex(&t);
-        // end: debug.
+            // begin: debug.
+            std::cout << "float(digit):       \t";
+            t = (s[i] - '0');
+            print_float_as_hex(&t);
+            // end: debug.
+        }
 
         num = 10.0f * num + (s[i] - '0');
 
         // begin: debug.
-        std::cout << "10.0f * num + digit:\t";
-        print_float_as_hex(&num);
+        if (debug) {
+            std::cout << "10.0f * num + digit:\t";
+            print_float_as_hex(&num);
+            std::cout << '\n';
+        }
         // end: debug.
-
-        std::cout << '\n';
     }
 
     if (s[i] == '.')
         i++;
 
-    std::cout << "\nfractional part:\n";
+    if (debug) {
+        std::cout << "\nfractional part:\n";
+    }
 
     for (overscale = 1.0f; isdigit(s[i]); i++) {
-        // begin: debug.
-        std::cout << "10.0f * num:        \t";
-        float t = 10.0f * num;
-        print_float_as_hex(&t);
-        // end: debug.
+        if (debug) {
+            // begin: debug.
+            std::cout << "10.0f * num:        \t";
+            float t = 10.0f * num;
+            print_float_as_hex(&t);
+            // end: debug.
 
-        // begin: debug.
-        std::cout << "overscale:          \t";
-        print_float_as_hex(&overscale);
-        // end: debug.
+            // begin: debug.
+            std::cout << "overscale:          \t";
+            print_float_as_hex(&overscale);
+            // end: debug.
 
-        // begin: debug.
-        std::cout << "overscale*=10.0f:   \t";
-        t = overscale * 10.0f;
-        print_float_as_hex(&t);
-        // end: debug.
-        
-        // begin: debug.
-        std::cout << "float(digit):       \t";
-        t = (s[i] - '0');
-        print_float_as_hex(&t);
-        // end: debug.
+            // begin: debug.
+            std::cout << "overscale*=10.0f:   \t";
+            t = overscale * 10.0f;
+            print_float_as_hex(&t);
+            // end: debug.
+
+            // begin: debug.
+            std::cout << "float(digit):       \t";
+            t = (s[i] - '0');
+            print_float_as_hex(&t);
+            // end: debug.
+        }
 
         num = 10.0f * num + (s[i] - '0');
         overscale *= 10.0f;
 
         // begin: debug.
-        std::cout << "10.0f * num + digit:\t";
-        print_float_as_hex(&num);
+        if (debug) {
+            std::cout << "10.0f * num + digit:\t";
+            print_float_as_hex(&num);
+            std::cout << '\n';
+        }
         // end: debug.
-
-        std::cout << '\n';
     }
 
     return sign * num / overscale;
@@ -2665,9 +2698,9 @@ void atof_case_16() {
 }
 
 // Проверка atof.
-// Переполнения нет.
-void atof_case_17() {
-    char num[] = "0.00";
+// Отрицательное значение.
+void atof_case_18() {
+    char num[] = "-16.123";
     std::cout << "string: " << num << '\n';
     float a = atof_kr_float(num);
     //float a = atof(num);
@@ -2701,6 +2734,38 @@ void atof_sandbox() {
     std::cout << "hex: ";
     print_float_as_hex(&a);
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Чтение клавиатуры.
+void read_keypad_1() {
+    char a_str[] = "0.5";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0.6";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "c_str: \"" << c_str << "\"" << '\n';
 }
 
 int main() {
@@ -2826,9 +2891,13 @@ int main() {
     //atof_case_14();
     //atof_case_15();
     //atof_case_16();
-    atof_case_17();
-    
+    //atof_case_17();
+    atof_case_18();
+
     //atof_sandbox();
+
+    // Тесты для проверки чтения клавиатуры.
+    //read_keypad_1();
 
     return 0;
 }
