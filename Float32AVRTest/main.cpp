@@ -2544,6 +2544,8 @@ void atof_case_5() {
 
 // Проверка atof.
 // Переполнения нет.
+// NOTE: хотя входное десятичное значение больше максимального значения представимого в одинарном float,
+// в процессе конвертации из-за промежуточных округлений в итоге получается значение, которое помещается в одинарный float.
 void atof_case_6() {
     char num[] = "340282429999999999999999999999999999999";
     std::cout << "string: " << num << '\n';
@@ -2699,6 +2701,19 @@ void atof_case_16() {
 
 // Проверка atof.
 // Отрицательное значение.
+void atof_case_17() {
+    char num[] = "0.00";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
+// Проверка atof.
+// Отрицательное значение.
 void atof_case_18() {
     char num[] = "-16.123";
     std::cout << "string: " << num << '\n';
@@ -2758,6 +2773,103 @@ void read_keypad_1() {
 
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "c_str: \"" << c_str << "\"" << '\n';
+}
+
+// Чтение клавиатуры.
+void read_keypad_2() {
+    char a_str[] = "-16.123";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "123.73";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "c_str: \"" << c_str << "\"" << '\n';
+}
+
+// Чтение клавиатуры.
+// Деление на ноль.
+void read_keypad_3() {
+    char a_str[] = "1";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "c_str: \"" << c_str << "\"" << '\n';
+}
+
+// Чтение клавиатуры.
+void read_keypad_4() {
+    char a_str[] = "999999999999999";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "9999999999999999";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
@@ -2898,6 +3010,9 @@ int main() {
 
     // Тесты для проверки чтения клавиатуры.
     //read_keypad_1();
+    //read_keypad_2();
+    //read_keypad_3();
+    //read_keypad_4();
 
     return 0;
 }
