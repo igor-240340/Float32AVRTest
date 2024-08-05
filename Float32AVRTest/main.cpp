@@ -2725,6 +2725,19 @@ void atof_case_18() {
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
 }
 
+// Проверка atof.
+// Отрицательный ноль.
+void atof_case_19() {
+    char num[] = "-0";
+    std::cout << "string: " << num << '\n';
+    float a = atof_kr_float(num);
+    //float a = atof(num);
+    std::cout << "float: " << std::fixed << std::setprecision(152) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a) << std::endl;
+}
+
 // Проверка atof
 // Просто несколько примеров на разные граничные случаи.
 void atof_sandbox() {
@@ -3004,7 +3017,8 @@ int main() {
     //atof_case_15();
     //atof_case_16();
     //atof_case_17();
-    atof_case_18();
+    //atof_case_18();
+    atof_case_19();
 
     //atof_sandbox();
 
