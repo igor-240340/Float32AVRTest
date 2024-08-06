@@ -2893,6 +2893,742 @@ void read_keypad_4() {
     std::cout << "c_str: \"" << c_str << "\"" << '\n';
 }
 
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_1() {
+    char a_str[] = "2";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "3";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float + b_float;
+    std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_2() {
+    char a_str[] = "10";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "7";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_3() {
+    char a_str[] = "10";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "-7";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_4() {
+    char a_str[] = "-10";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "7";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_5() {
+    char a_str[] = "-10";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "-7";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_6() {
+    char a_str[] = "0.0000000000001";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0.00000000000001";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float + b_float;
+    std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_7() {
+    char a_str[] = "999999999999999";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "9999999999999999";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float + b_float;
+    std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_8() {
+    char a_str[] = "0.0000000000001";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "9999999999999999";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_9() {
+    char a_str[] = "999999999999999";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "9999999999999999";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_10() {
+    char a_str[] = "9";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "1";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float + b_float;
+    std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_11() {
+    char a_str[] = "10";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "1";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float - b_float;
+    std::cout << "a - b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_12() {
+    char a_str[] = "3";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "2";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_13() {
+    char a_str[] = "1";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "2";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_14() {
+    char a_str[] = "5";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float + b_float;
+    std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_15() {
+    char a_str[] = "0";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "5";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float + b_float;
+    std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_16() {
+    char a_str[] = "5";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float - b_float;
+    std::cout << "a - b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_17() {
+    char a_str[] = "0";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "5";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float - b_float;
+    std::cout << "a - b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_18() {
+    char a_str[] = "5";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_19() {
+    char a_str[] = "0";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "5";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float * b_float;
+    std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_20() {
+    char a_str[] = "5";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_21() {
+    char a_str[] = "0";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "5";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_22() {
+    char a_str[] = "-0";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "5";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float + b_float;
+    std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
+// Полная проверка арифметических выражений.
+void calculator_workflow_test_23() {
+    char a_str[] = "0";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "0";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    ftoa_float_mod(c_float, 100, c_str, false);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
 int main() {
     //hex_to_float();
     //loop_through_normalized_float();
@@ -3018,7 +3754,7 @@ int main() {
     //atof_case_16();
     //atof_case_17();
     //atof_case_18();
-    atof_case_19();
+    //atof_case_19();
 
     //atof_sandbox();
 
@@ -3027,6 +3763,30 @@ int main() {
     //read_keypad_2();
     //read_keypad_3();
     //read_keypad_4();
+
+    //calculator_workflow_test_1();
+    //calculator_workflow_test_2();
+    //calculator_workflow_test_3();
+    //calculator_workflow_test_4();
+    //calculator_workflow_test_5();
+    //calculator_workflow_test_6();
+    //calculator_workflow_test_7();
+    //calculator_workflow_test_8();
+    //calculator_workflow_test_9();
+    //calculator_workflow_test_10();
+    //calculator_workflow_test_11();
+    //calculator_workflow_test_12();
+    //calculator_workflow_test_13();
+    //calculator_workflow_test_14();
+    //calculator_workflow_test_15();
+    //calculator_workflow_test_16();
+    //calculator_workflow_test_17();
+    //calculator_workflow_test_18();
+    //calculator_workflow_test_19();
+    //calculator_workflow_test_20();
+    //calculator_workflow_test_21();
+    //calculator_workflow_test_22();
+    calculator_workflow_test_23();
 
     return 0;
 }
