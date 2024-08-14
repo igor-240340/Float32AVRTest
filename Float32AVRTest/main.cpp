@@ -2090,6 +2090,10 @@ void zero_diff() {
 //
 // Реализация из z88dk [https://z88dk.org/site/].
 // Версия с float и нашими модификациями: "лишний" код, устранение переполнения для граничного случая.
+//
+// NOTE: эта версия (также, как и оригинальная реализация для double и float) больше не является актуальной,
+// поскольку имеет проблемы с нормализацией, поэтому
+// она была заменена на ftoan.
 void ftoa_float_mod(float num, int precision, char* str, bool debug = true) {
     float order;
     int i;
@@ -2101,7 +2105,8 @@ void ftoa_float_mod(float num, int precision, char* str, bool debug = true) {
     }
     i = 1;
     order = 1.0f;
-    float numDownScale = num * 0.1f; // Чтобы избежать переполнения.
+    float numDownScale = num / 10.0f; // Чтобы избежать переполнения.
+
     while (numDownScale >= order) {
         order *= 10.0f;
         i++;
@@ -2166,6 +2171,85 @@ void ftoa_float_mod(float num, int precision, char* str, bool debug = true) {
         *str = 0;
         return;
     }
+    *str++ = '.';
+
+    // begin: debug.
+    if (debug) {
+        std::cout << "\nnum:\t";
+        print_float_as_hex(&num);
+    }
+    // end: debug.
+
+    while (precision--) {
+        num *= 10.0f;
+
+        // begin: debug.
+        if (debug) {
+            std::cout << "\nnum*=10.0f:\t";
+            print_float_as_hex(&num);
+        }
+        // end: debug.
+
+        digit = num;
+        *str++ = digit + '0';
+
+        num -= (float)digit;
+
+        // begin: debug.
+        if (debug) {
+            std::cout << "num-=digit:\t";
+            print_float_as_hex(&num);
+        }
+        // end: debug.
+    }
+    *str = 0;
+}
+
+//
+// Реализация основана на z88dk [https://github.com/z88dk/z88dk/blob/master/libsrc/math/genmath/ftoa.c].
+// 
+// NOTE: это финальная версия, которая принимает только нормализованные десятичные числа.
+// Оригинальная версия и версия с нашими модификациями (ftoa_float_mod) не во всех случаях дают корректную нормализацию из-за ошибок округления,
+// что приводит к извлечению некорректного числового знака.
+void ftoan(float num, int precision, char* str, bool debug = true) {
+    float order;
+    int i;
+    int digit;
+
+    if (num < 0.0f) {
+        *str++ = '-';
+        num = -num;
+    }
+    i = 1;
+
+    // begin: debug.
+    if (debug) {
+        std::cout << "order:\t";
+        print_float_as_hex(&order);
+    }
+    // end: debug.
+
+    digit = num;
+    *str++ = digit + '0';
+
+    // begin: debug.
+    if (debug) {
+        std::cout << "(float)digit:\t";
+        float digit_float = (float)digit;
+        print_float_as_hex(&digit_float);
+    }
+    // end: debug.
+
+    num = num - (float)digit;
+
+    // begin: debug.
+    if (debug) {
+        std::cout << "num-digit:\t";
+        print_float_as_hex(&num);
+    }
+    // end: debug.
+
+
     *str++ = '.';
 
     // begin: debug.
@@ -2342,7 +2426,7 @@ void denormals_ftoa() {
 
 // Проверка ftoa.
 // Пример 1.
-void ftoa_case_1() {
+void ftoa_float_mod_case_1() {
     float a = powf(2, -126);
     std::cout << std::fixed << std::setprecision(150) << a << "\n";
     print_float_as_hex(&a);
@@ -2356,7 +2440,7 @@ void ftoa_case_1() {
 
 // Проверка ftoa.
 // Пример 2.
-void ftoa_case_2() {
+void ftoa_float_mod_case_2() {
     float a = (powf(2, 24) - 1) * powf(2, -24);
     std::cout << std::fixed << std::setprecision(150) << a << "\n";
     print_float_as_hex(&a);
@@ -2370,7 +2454,7 @@ void ftoa_case_2() {
 
 // Проверка ftoa
 // Пример 3.
-void ftoa_case_3() {
+void ftoa_float_mod_case_3() {
     float a = 1.0f;
     std::cout << std::fixed << std::setprecision(100) << a << "\n";
     print_float_as_hex(&a);
@@ -2385,7 +2469,7 @@ void ftoa_case_3() {
 
 // Проверка ftoa
 // Пример 4.
-void ftoa_case_4() {
+void ftoa_float_mod_case_4() {
     float a = 10.0f - powf(2, -23) * powf(2, 3);
     std::cout << std::fixed << std::setprecision(100) << a << "\n";
     print_float_as_hex(&a);
@@ -2400,7 +2484,7 @@ void ftoa_case_4() {
 
 // Проверка ftoa
 // Пример 5.
-void ftoa_case_5() {
+void ftoa_float_mod_case_5() {
     float a = 10.0f;
     std::cout << std::fixed << std::setprecision(100) << a << "\n";
     print_float_as_hex(&a);
@@ -2415,7 +2499,7 @@ void ftoa_case_5() {
 
 // Проверка ftoa
 // Пример 6.
-void ftoa_case_6() {
+void ftoa_float_mod_case_6() {
     float a = (powf(2, 24) - 1) * powf(2, -23) * powf(2, 127);
     std::cout << std::fixed << std::setprecision(150) << a << "\n";
     print_float_as_hex(&a);
@@ -2430,7 +2514,7 @@ void ftoa_case_6() {
 
 // Проверка ftoa
 // Пример 7.
-void ftoa_case_7() {
+void ftoa_float_mod_case_7() {
     float a = -117926.1328125f;
     std::cout << std::fixed << std::setprecision(150) << a << "\n";
     print_float_as_hex(&a);
@@ -2445,7 +2529,7 @@ void ftoa_case_7() {
 
 // Проверка ftoa
 // Пример 8.
-void ftoa_case_8() {
+void ftoa_float_mod_case_8() {
     float a = 0.0f;
     std::cout << std::fixed << std::setprecision(150) << a << "\n";
     print_float_as_hex(&a);
@@ -3629,6 +3713,365 @@ void calculator_workflow_test_23() {
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
+// Эталонная реализация ftoae - конвертация float в строку в экспоненциальной форме.
+void ftoae(float num, char* str, bool debug = false) {
+    int exp = 0;
+
+    // Целая часть не равна нулю.
+    // Значение num либо нормализовано, либо денормализовано влево.
+    if ((int)num != 0) {
+        // Понижаем порядок, чтобы избежать переполнения order.
+        float num_abs_downscaled = abs(num) / 10.0f;
+        float order = 1.0f;
+
+        if (debug) {
+            std::cout << "num_abs_downscaled: " << std::fixed << std::setprecision(150) << num_abs_downscaled << '\n';
+        }
+
+        // Если order стал больше, чем num_abs_downscaled,
+        // который в десять раз меньше истинного num_abs,
+        // то его порядок равен порядку истинного num.
+        while (order <= num_abs_downscaled) {
+            order *= 10.0f;
+            exp++;
+
+            if (debug) {
+                std::cout << std::dec << "exp: " << exp;
+                std::cout << ", order: " << std::fixed << std::setprecision(150) << order << "\n";
+            }
+        }
+
+        if (debug) {
+            std::cout << "order: " << std::fixed << std::setprecision(150) << order << '\n';
+            std::cout << "hex: ";
+            print_float_as_hex(&order);
+        }
+
+        // Нормализуем num.
+        num /= order;
+
+        if (debug) {
+            std::cout << "normalized: " << std::fixed << std::setprecision(150) << num << '\n';
+            std::cout << "hex: ";
+            print_float_as_hex(&num);
+        }
+
+        char normalized_str[255];
+        ftoa_float_mod(num, 150, normalized_str, false);
+
+        if (debug) {
+            std::cout << "normalized_str: " << normalized_str << '\n';
+        }
+    }
+    // Целая часть равна нулю.
+    // Значение num денормализовано вправо.
+    else {
+        do {
+            num *= 10.0f; // Нормализуем num_abs
+            exp++;
+        } while ((int)num == 0);
+
+        exp = -exp;
+
+        if (debug) {
+            std::cout << "normalized: " << std::fixed << std::setprecision(150) << num << '\n';
+            std::cout << "hex: ";
+            print_float_as_hex(&num);
+        }
+
+        char normalized_str[255];
+        ftoa_float_mod(num, 150, normalized_str, false);
+
+        if (debug) {
+            std::cout << "normalized_str: " << normalized_str << '\n';
+        }
+    }
+
+    // Максимальное количество знаков на LCD.
+    int precision = 0;
+    const int LCD_MAX = 16;
+    // Экспоненциальная форма не требуется.
+    if (exp == 0) {
+        // Резервируем два знака под целую часть и точку,
+        // и ещё один - под символ '-' в случае отрицательного num.
+        precision = num < 0 ? LCD_MAX - 2 - 1 : LCD_MAX - 2;
+
+        ftoa_float_mod(num, precision, str, false);
+    }
+    else {
+        // Резервируем дополнительно 4 знака под экспоненциальную запись: "E+99".
+        precision = num < 0 ? LCD_MAX - 2 - 4 - 1 : LCD_MAX - 2 - 4;
+
+        ftoa_float_mod(num, precision, str, false);
+
+        // Смещаем указатель в позицию, где зарезервировано 4 символа под экспоненту.
+        str += LCD_MAX - 4;
+
+        // Преобразуем экспоненту в строку.
+        *str++ = 'E';
+        *str++ = exp < 0 ? '-' : '+';
+
+        // Модуль экспоненты в этой ветке лежит в [1,38].
+        exp = abs(exp);
+        int q = exp / 10;
+        int r = exp % 10;
+        *str++ = '0' + q;
+        *str++ = '0' + r;
+    }
+}
+
+// Эталонная реализация ftoae - конвертация float в строку в экспоненциальной форме.
+// 
+// NOTE: исправлена нормализация вправо - вместо деления на итеративно вычисляемую степень десяти
+// выполняется итеративное деление на 10 по аналогии с нормализацией влево.
+// Реализация в первой версии из-за округления не во всех случаях давала нормализованное значение.
+//
+// Проблема в том, что в некоторых случаях после понижения порядка делением на 10, из-за округления в большую сторону,
+// порядок числа num в действительности оставался прежним, уменьшалось только его значение. В результате order имел порядок больше истинного
+// и при делении num'/order происходила денормализация вправо.
+// Другая проблема связана с тем, что после нормализации num'/order значение оказывалось слишком близки к 10 и округлялось до 10,
+// давая денормализацию влево.
+// 
+// Описанная проблема возникает и в оригинальной реализации из z88dk, но на других значениях, поскольку там нет предварительного понижения порядка.
+//
+// Примеры проблемных степеней десяти можно увидеть в функции ftoae_pows_of_tens.
+//
+// Обоснование: основной вопрос в том, существует ли денормализованное влево число такое, что после деления на 10 даёт денормализацию вправо и т.о.
+// мы снова получим двузначное денормализованное влево значение. Если такое число существует, то оно должно быть максимально близко к единице,
+// чтобы после деления дать округление в меньшую сторону и стать меньше единицы. Наименьшее денормализованное - это 10, после деления на десять оно
+// даёт единицу. Если теперь брать все значения отдаляющиеся от 10 в плюс бесконечность, то результат деления на 10 также будет увеличиваться
+// отдаляясь от единицы (и т.о. - от наибольшего денормализованного вправо меньше единицы) в большую сторону,
+// при этом округление по-умолчание выполняется к тому значению, которое ближе к истинному.
+//
+// Что касается нормализации влево, то мы уже показывали, что при умножении наибольшего денормализованного меньше единицы на 10, мы получаем нормализованное число.
+void ftoae_v2(float num, char* str, bool debug = false) {
+    int exp = 0;
+
+    // Целая часть не равна нулю.
+    // Значение num либо нормализовано, либо денормализовано влево.
+    if ((int)num != 0) {
+        // Хранит значение num на момент перед очередным делением на 10.
+        // В конце содержит нормализованное значение num.
+        // Возможно, что num уже содержит нормализованное значение.
+        float num_norm = num;
+
+        while (true) {
+            num = num / 10.0f;
+
+            // Если num стал меньше единицы после деления на 10,
+            // значит предыдущее значение было нормализованным.
+            if (num < 1)
+                break;
+
+            exp++;
+            num_norm = num;
+        }
+
+        num = num_norm;
+
+        if (debug) {
+            std::cout << "normalized: " << std::fixed << std::setprecision(150) << num << '\n';
+            std::cout << "hex: ";
+            print_float_as_hex(&num);
+        }
+
+        char normalized_str[255];
+        ftoan(num, 150, normalized_str, false);
+
+        if (debug) {
+            std::cout << "normalized_str: " << normalized_str << '\n';
+        }
+    }
+    // Целая часть равна нулю.
+    // Значение num денормализовано вправо.
+    else {
+        do {
+            num *= 10.0f; // Нормализуем num_abs
+            exp++;
+        } while ((int)num == 0);
+
+        exp = -exp;
+
+        if (debug) {
+            std::cout << "normalized: " << std::fixed << std::setprecision(150) << num << '\n';
+            std::cout << "hex: ";
+            print_float_as_hex(&num);
+        }
+
+        char normalized_str[255];
+        ftoan(num, 150, normalized_str, false);
+
+        if (debug) {
+            std::cout << "normalized_str: " << normalized_str << '\n';
+        }
+    }
+
+    // Максимальное количество знаков на LCD.
+    int precision = 0;
+    const int LCD_MAX = 16;
+    // Экспоненциальная форма не требуется.
+    if (exp == 0) {
+        // Резервируем два знака под целую часть и точку,
+        // и ещё один - под символ '-' в случае отрицательного num.
+        precision = num < 0 ? LCD_MAX - 2 - 1 : LCD_MAX - 2;
+
+        ftoan(num, precision, str, false);
+    }
+    else {
+        // Резервируем дополнительно 4 знака под экспоненциальную запись: "E+99".
+        precision = num < 0 ? LCD_MAX - 2 - 4 - 1 : LCD_MAX - 2 - 4;
+
+        ftoan(num, precision, str, false);
+
+        // Смещаем указатель в позицию, где зарезервировано 4 символа под экспоненту.
+        str += LCD_MAX - 4;
+
+        // Преобразуем экспоненту в строку.
+        *str++ = 'E';
+        *str++ = exp < 0 ? '-' : '+';
+
+        // Модуль экспоненты в этой ветке лежит в [1,38].
+        exp = abs(exp);
+        int q = exp / 10;
+        int r = exp % 10;
+        *str++ = '0' + q;
+        *str++ = '0' + r;
+    }
+}
+
+// Проверка ftoae.
+// Пример 1. Наибольшее денормализованное больше 9.
+// NOTE: здесь и далее имеется ввиду десятичная нормализация/денормализация.
+void ftoae_case_1() {
+    float a = (powf(2, 24) - 1) * powf(2, -23) * powf(2, 127);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 2. Наименьшее денормализованное больше 9.
+void ftoae_case_2() {
+    float a = 10.0f;
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 3. Наибольшее нормализованное.
+void ftoae_case_3() {
+    float a = 10.0f - powf(2, -23) * powf(2, 3);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 4. Наименьшее нормализованное.
+void ftoae_case_4() {
+    float a = -1.0f;
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 5. Наибольшее денормализованное меньше 1.
+void ftoae_case_5() {
+    float a = 1.0f - powf(2, -24);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 6. Наименьшее денормализованное меньше 1.
+void ftoae_case_6() {
+    float a = -powf(2, -126);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Взятие в качестве num положительных степеней десяти для проверки нормализации вправо.
+void ftoae_pows_of_tens() {
+    for (int i = 0; i <= 38; i++) {
+        float a = powf(10, i);
+
+        std::cout << "exp: " << i << "\n";
+        std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+        std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+
+        char a_str_sci[255];
+        memset(a_str_sci, '\0', sizeof a_str_sci);
+        ftoae_v2(a, a_str_sci);
+        std::cout << "ftoae_v2(): " << a_str_sci << '\n';
+
+        std::cout << '\n';
+    }
+}
+
 int main() {
     //hex_to_float();
     //loop_through_normalized_float();
@@ -3723,15 +4166,16 @@ int main() {
     //fadd_zero_nonzero();
     //fadd_nonzero_zero();
 
-    // Тесты для ftoa.
-    //ftoa_case_1();
-    //ftoa_case_2();
-    //ftoa_case_3();
-    //ftoa_case_4();
-    //ftoa_case_5();
-    //ftoa_case_6();
-    //ftoa_case_7();
-    //ftoa_case_8();
+    // Тесты для ftoa_float_mod.
+    // NOTE: эта версия больше не актуальна.
+    //ftoa_float_mod_case_1();
+    //ftoa_float_mod_case_2();
+    //ftoa_float_mod_case_3();
+    //ftoa_float_mod_case_4();
+    //ftoa_float_mod_case_5();
+    //ftoa_float_mod_case_6();
+    //ftoa_float_mod_case_7();
+    //ftoa_float_mod_case_8();
     //denormals_ftoa();
 
     // Тесты для atof.    
@@ -3786,7 +4230,20 @@ int main() {
     //calculator_workflow_test_20();
     //calculator_workflow_test_21();
     //calculator_workflow_test_22();
-    calculator_workflow_test_23();
+    //calculator_workflow_test_23();
+
+    // Тесты для ftoae.
+    //ftoae_case_1();
+    //ftoae_case_2();
+    //ftoae_case_3();
+    //ftoae_case_4();
+    //ftoae_case_5();
+    //ftoae_case_6();
+
+    //ftoae_pows_of_tens();
+
+    // TODO: добавить пример денормализованного влево с отрицательным значением, чтобы проверить взятие модуля.
+    // TODO: добавить пример числа, равного степени десяти, чтобы проверить при вычитании флаг Z (только для ftoa, т.к. в ftoae мы уже изменили алгоритм).
 
     return 0;
 }
