@@ -4062,14 +4062,72 @@ void ftoae_pows_of_tens() {
         std::cout << "exp: " << i << "\n";
         std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
         std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+        //print_float_as_hex(&a);
 
         char a_str_sci[255];
         memset(a_str_sci, '\0', sizeof a_str_sci);
         ftoae_v2(a, a_str_sci);
+        //ftoae(a, a_str_sci);
         std::cout << "ftoae_v2(): " << a_str_sci << '\n';
 
         std::cout << '\n';
     }
+}
+
+// Проверка ftoan.
+// Пример 1.
+void ftoan_case_1() {
+    float a = 0.0f;
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoan(a, 5, str);
+    std::cout << str << '\n';
+}
+
+// Проверка ftoan.
+// Пример 2.
+void ftoan_case_2() {
+    float a = 1.0f;
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoan(a, 5, str);
+    std::cout << str << '\n';
+}
+
+// Проверка ftoan.
+// Пример 3.
+void ftoan_case_3() {
+    float a = 10.0f - powf(2, -23) * powf(2, 3);
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoan(a, 20, str);
+    std::cout << str << '\n';
+}
+
+// Проверка ftoan.
+// Пример 4.
+void ftoan_case_4() {
+    float a = -4.5832233428955078125f;
+    std::cout << std::fixed << std::setprecision(150) << a << "\n";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char str[255];
+    ftoan(a, 23, str);
+    std::cout << str << '\n';
 }
 
 int main() {
@@ -4241,6 +4299,12 @@ int main() {
     //ftoae_case_6();
 
     //ftoae_pows_of_tens();
+
+    // Тесты для ftoan.
+    //ftoan_case_1();
+    //ftoan_case_2();
+    //ftoan_case_3();
+    //ftoan_case_4();
 
     // TODO: добавить пример денормализованного влево с отрицательным значением, чтобы проверить взятие модуля.
     // TODO: добавить пример числа, равного степени десяти, чтобы проверить при вычитании флаг Z (только для ftoa, т.к. в ftoae мы уже изменили алгоритм).
