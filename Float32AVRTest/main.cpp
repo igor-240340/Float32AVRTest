@@ -3860,7 +3860,13 @@ void ftoae_v2(float num, char* str, bool debug = false) {
 
             // Если num стал меньше единицы после деления на 10,
             // значит предыдущее значение было нормализованным.
-            if (num < 1)
+            // 
+            // NOTE: на уровне ассемблерной реализации в МК нет необходимости вычислять модуль,
+            // поскольку мы выясняем отношение |num|<1 не арифметически, а распаковывая экспоненту
+            // двоичного представления num в формате float и смотрим, стала ли она меньше нуля (или меньше 127 в коде со смещением).
+            // То есть, мы используем однозначный косвенный признак, поскольку все значения float меньше 1 после нормализации двоичной мантиссы
+            // будут иметь экспоненту равную как минимум (0+127)-1=126 в коде со смещением или 126-127=-1.
+            if (abs(num) < 1)
                 break;
 
             exp++;
@@ -3953,7 +3959,7 @@ void ftoae_case_1() {
 
     char a_str_sci[255];
     memset(a_str_sci, '\0', sizeof a_str_sci);
-    ftoae_v2(a, a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
     std::cout << "ftoae(): " << a_str_sci;
 
     std::cout << '\n';
@@ -3962,7 +3968,7 @@ void ftoae_case_1() {
 // Проверка ftoae.
 // Пример 2. Наименьшее денормализованное больше 9.
 void ftoae_case_2() {
-    float a = 10.0f;
+    float a = -10.0f;
     std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
     std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
     std::cout << "hex: ";
@@ -3972,7 +3978,7 @@ void ftoae_case_2() {
 
     char a_str_sci[255];
     memset(a_str_sci, '\0', sizeof a_str_sci);
-    ftoae_v2(a, a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
     std::cout << "ftoae(): " << a_str_sci;
 
     std::cout << '\n';
@@ -3991,7 +3997,7 @@ void ftoae_case_3() {
 
     char a_str_sci[255];
     memset(a_str_sci, '\0', sizeof a_str_sci);
-    ftoae_v2(a, a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
     std::cout << "ftoae(): " << a_str_sci;
 
     std::cout << '\n';
@@ -4010,7 +4016,7 @@ void ftoae_case_4() {
 
     char a_str_sci[255];
     memset(a_str_sci, '\0', sizeof a_str_sci);
-    ftoae_v2(a, a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
     std::cout << "ftoae(): " << a_str_sci;
 
     std::cout << '\n';
@@ -4029,7 +4035,7 @@ void ftoae_case_5() {
 
     char a_str_sci[255];
     memset(a_str_sci, '\0', sizeof a_str_sci);
-    ftoae_v2(a, a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
     std::cout << "ftoae(): " << a_str_sci;
 
     std::cout << '\n';
@@ -4048,7 +4054,83 @@ void ftoae_case_6() {
 
     char a_str_sci[255];
     memset(a_str_sci, '\0', sizeof a_str_sci);
-    ftoae_v2(a, a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 7. Степень десяти, которая в старой версии была проблемной и давала некорректную нормализацию - 10 в целой части.
+void ftoae_case_7() {
+    float a = powf(10, 37);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 8. Степень десяти, которая в старой версии была проблемной и давала некорректную нормализацию - 0 в целой части.
+void ftoae_case_8() {
+    float a = powf(10, 33);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 9. Случайный пример числа денормализованного влево.
+void ftoae_case_9() {
+    float a = 25307.576171875f;
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 10. Случайный пример числа денормализованного вправо.
+void ftoae_case_10() {
+    float a = 1.3023970127105712890625f * powf(2, -34);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
     std::cout << "ftoae(): " << a_str_sci;
 
     std::cout << '\n';
@@ -4297,6 +4379,10 @@ int main() {
     //ftoae_case_4();
     //ftoae_case_5();
     //ftoae_case_6();
+    //ftoae_case_7();
+    //ftoae_case_8();
+    //ftoae_case_9();
+    ftoae_case_10();
 
     //ftoae_pows_of_tens();
 
@@ -4305,9 +4391,6 @@ int main() {
     //ftoan_case_2();
     //ftoan_case_3();
     //ftoan_case_4();
-
-    // TODO: добавить пример денормализованного влево с отрицательным значением, чтобы проверить взятие модуля.
-    // TODO: добавить пример числа, равного степени десяти, чтобы проверить при вычитании флаг Z (только для ftoa, т.к. в ftoae мы уже изменили алгоритм).
 
     return 0;
 }
