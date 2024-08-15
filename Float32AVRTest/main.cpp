@@ -3765,6 +3765,41 @@ void calculator_workflow_test_23() {
     }
 }
 
+// Полная проверка арифметических выражений.
+// Случайный тест.
+void calculator_workflow_test_24() {
+    char a_str[] = "301.9533944630";
+    std::cout << "a_str: \"" << a_str << "\"" << '\n';
+    float a_float = atof_kr_float(a_str, false);
+    std::cout << "a_float: " << std::fixed << std::setprecision(152) << a_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&a_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(a_float) << std::endl;
+
+    std::cout << '\n';
+
+    char b_str[] = "23204.0642586600";
+    std::cout << "b_str: \"" << b_str << "\"" << '\n';
+    float b_float = atof_kr_float(b_str, false);
+    std::cout << "b_float: " << std::fixed << std::setprecision(152) << b_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&b_float);
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(b_float) << std::endl;
+
+    std::cout << '\n';
+
+    float c_float = a_float / b_float;
+    std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
+    std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
+
+    std::cout << '\n';
+
+    char c_str[200];
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
+    std::cout << "result: \"" << c_str << "\"" << '\n';
+}
+
 // Эталонная реализация ftoae - конвертация float в строку в экспоненциальной форме.
 void ftoae(float num, char* str, bool debug = false) {
     int exp = 0;
@@ -4441,7 +4476,8 @@ int main() {
     //calculator_workflow_test_20();
     //calculator_workflow_test_21();
     //calculator_workflow_test_22();
-    calculator_workflow_test_23();
+    //calculator_workflow_test_23();
+    calculator_workflow_test_24();
 
     // Тесты для ftoae.
     //ftoae_case_1();
