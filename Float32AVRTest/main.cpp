@@ -3614,12 +3614,14 @@ void calculator_workflow_test_19() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3646,13 +3648,17 @@ void calculator_workflow_test_20() {
     float c_float = a_float / b_float;
     std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
-    char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
-    std::cout << "result: \"" << c_str << "\"" << '\n';
+    if (!std::isinf(c_float)) {
+        char c_str[200];
+        memset(c_str, '\0', sizeof c_str);
+        ftoae_v2(c_float, c_str, true);
+        std::cout << "result: \"" << c_str << "\"" << '\n';
+    }
 }
 
 // Полная проверка арифметических выражений.
@@ -3678,12 +3684,14 @@ void calculator_workflow_test_21() {
     float c_float = a_float / b_float;
     std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3710,12 +3718,14 @@ void calculator_workflow_test_22() {
     float c_float = a_float + b_float;
     std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3742,13 +3752,17 @@ void calculator_workflow_test_23() {
     float c_float = a_float / b_float;
     std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
-    char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
-    std::cout << "result: \"" << c_str << "\"" << '\n';
+    if (!std::isnan(c_float)) {
+        char c_str[200];
+        memset(c_str, '\0', sizeof c_str);
+        ftoae_v2(c_float, c_str, true);
+        std::cout << "result: \"" << c_str << "\"" << '\n';
+    }
 }
 
 // Эталонная реализация ftoae - конвертация float в строку в экспоненциальной форме.
@@ -4422,12 +4436,12 @@ int main() {
     //calculator_workflow_test_15();
     //calculator_workflow_test_16();
     //calculator_workflow_test_17();
-    //!!calculator_workflow_test_18();
+    //calculator_workflow_test_18();
     //calculator_workflow_test_19();
     //calculator_workflow_test_20();
     //calculator_workflow_test_21();
     //calculator_workflow_test_22();
-    //calculator_workflow_test_23();
+    calculator_workflow_test_23();
 
     // Тесты для ftoae.
     //ftoae_case_1();
@@ -4440,7 +4454,7 @@ int main() {
     //ftoae_case_8();
     //ftoae_case_9();
     //ftoae_case_10();
-    ftoae_case_11();
+    //ftoae_case_11();
 
     //ftoae_pows_of_tens();
 
