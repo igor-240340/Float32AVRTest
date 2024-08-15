@@ -8,6 +8,8 @@
 #include <chrono>
 #include <ctime>
 
+void ftoae_v2(float num, char* str, bool debug);
+
 void print_float_as_hex(float* a) {
     uint32_t intRep = *(uint32_t*)a;
     std::cout << std::hex << std::setfill('0') << std::setw(8) << intRep << std::endl;
@@ -3000,12 +3002,14 @@ void calculator_workflow_test_1() {
     float c_float = a_float + b_float;
     std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3032,12 +3036,14 @@ void calculator_workflow_test_2() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3064,12 +3070,14 @@ void calculator_workflow_test_3() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3096,12 +3104,14 @@ void calculator_workflow_test_4() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3128,12 +3138,14 @@ void calculator_workflow_test_5() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3160,12 +3172,14 @@ void calculator_workflow_test_6() {
     float c_float = a_float + b_float;
     std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3192,12 +3206,14 @@ void calculator_workflow_test_7() {
     float c_float = a_float + b_float;
     std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3224,12 +3240,14 @@ void calculator_workflow_test_8() {
     float c_float = a_float / b_float;
     std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3256,12 +3274,14 @@ void calculator_workflow_test_9() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3288,12 +3308,14 @@ void calculator_workflow_test_10() {
     float c_float = a_float + b_float;
     std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3320,12 +3342,14 @@ void calculator_workflow_test_11() {
     float c_float = a_float - b_float;
     std::cout << "a - b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3352,12 +3376,14 @@ void calculator_workflow_test_12() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3384,12 +3410,14 @@ void calculator_workflow_test_13() {
     float c_float = a_float / b_float;
     std::cout << "a / b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3416,12 +3444,14 @@ void calculator_workflow_test_14() {
     float c_float = a_float + b_float;
     std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3448,12 +3478,14 @@ void calculator_workflow_test_15() {
     float c_float = a_float + b_float;
     std::cout << "a + b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3480,12 +3512,14 @@ void calculator_workflow_test_16() {
     float c_float = a_float - b_float;
     std::cout << "a - b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3512,12 +3546,14 @@ void calculator_workflow_test_17() {
     float c_float = a_float - b_float;
     std::cout << "a - b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3544,12 +3580,14 @@ void calculator_workflow_test_18() {
     float c_float = a_float * b_float;
     std::cout << "a * b: " << std::fixed << std::setprecision(152) << c_float << "\n";
     std::cout << "hex: "; print_float_as_hex(&c_float);
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << c_float << "\n";
     std::cout << "subnormal: " << std::boolalpha << !std::isnormal(c_float) << std::endl;
 
     std::cout << '\n';
 
     char c_str[200];
-    ftoa_float_mod(c_float, 100, c_str, false);
+    memset(c_str, '\0', sizeof c_str);
+    ftoae_v2(c_float, c_str, true);
     std::cout << "result: \"" << c_str << "\"" << '\n';
 }
 
@@ -3891,10 +3929,10 @@ void ftoae_v2(float num, char* str, bool debug = false) {
     // Целая часть равна нулю.
     // Значение num денормализовано вправо.
     else {
-        do {
+        while (num != 0 && (int)num == 0) {
             num *= 10.0f; // Нормализуем num_abs
             exp++;
-        } while ((int)num == 0);
+        }
 
         exp = -exp;
 
@@ -3914,23 +3952,23 @@ void ftoae_v2(float num, char* str, bool debug = false) {
 
     // Максимальное количество знаков на LCD.
     int precision = 0;
-    const int LCD_MAX = 16;
+    const int LCD_LEN = 16;
     // Экспоненциальная форма не требуется.
     if (exp == 0) {
         // Резервируем два знака под целую часть и точку,
         // и ещё один - под символ '-' в случае отрицательного num.
-        precision = num < 0 ? LCD_MAX - 2 - 1 : LCD_MAX - 2;
+        precision = num < 0 ? LCD_LEN - 2 - 1 : LCD_LEN - 2;
 
         ftoan(num, precision, str, false);
     }
     else {
         // Резервируем дополнительно 4 знака под экспоненциальную запись: "E+99".
-        precision = num < 0 ? LCD_MAX - 2 - 4 - 1 : LCD_MAX - 2 - 4;
+        precision = num < 0 ? LCD_LEN - 2 - 4 - 1 : LCD_LEN - 2 - 4;
 
         ftoan(num, precision, str, false);
 
         // Смещаем указатель в позицию, где зарезервировано 4 символа под экспоненту.
-        str += LCD_MAX - 4;
+        str += LCD_LEN - 4;
 
         // Преобразуем экспоненту в строку.
         *str++ = 'E';
@@ -4121,6 +4159,25 @@ void ftoae_case_9() {
 // Пример 10. Случайный пример числа денормализованного вправо.
 void ftoae_case_10() {
     float a = 1.3023970127105712890625f * powf(2, -34);
+    std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
+    std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
+    std::cout << "hex: ";
+    print_float_as_hex(&a);
+
+    std::cout << '\n';
+
+    char a_str_sci[255];
+    memset(a_str_sci, '\0', sizeof a_str_sci);
+    ftoae_v2(a, a_str_sci, true);
+    std::cout << "ftoae(): " << a_str_sci;
+
+    std::cout << '\n';
+}
+
+// Проверка ftoae.
+// Пример 11. Нулевое число.
+void ftoae_case_11() {
+    float a = 0.0f;
     std::cout << "fixed: " << std::fixed << std::setprecision(150) << a << "\n";
     std::cout << "scientific: " << std::scientific << std::setprecision(150) << a << "\n";
     std::cout << "hex: ";
@@ -4365,7 +4422,7 @@ int main() {
     //calculator_workflow_test_15();
     //calculator_workflow_test_16();
     //calculator_workflow_test_17();
-    //calculator_workflow_test_18();
+    //!!calculator_workflow_test_18();
     //calculator_workflow_test_19();
     //calculator_workflow_test_20();
     //calculator_workflow_test_21();
@@ -4382,7 +4439,8 @@ int main() {
     //ftoae_case_7();
     //ftoae_case_8();
     //ftoae_case_9();
-    ftoae_case_10();
+    //ftoae_case_10();
+    ftoae_case_11();
 
     //ftoae_pows_of_tens();
 
