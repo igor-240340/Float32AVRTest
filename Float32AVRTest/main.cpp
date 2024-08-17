@@ -1990,6 +1990,48 @@ void add_case_neg_36() {
     print_float_as_hex(&r);
 }
 
+// Вычитание. Оба операнда отрицательные.
+// Пример 1.
+// NOTE: пример был добавлен, поскольку обнаружилась проблема с вычислением знака в FSUB32 в float32avr.
+void fsub_case_1() {
+    float a = -12.0f;
+    float b = -14.0f;
+    float r = a - b;
+
+    std::cout << std::fixed << std::setprecision(150) << "a=" << a << std::endl;
+    std::cout << std::fixed << std::setprecision(150) << "b=" << b << std::endl;
+    std::cout << std::fixed << std::setprecision(150) << "r=" << r << std::endl;
+
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(r) << std::endl;
+
+    std::cout << std::endl;
+
+    print_float_as_hex(&a);
+    print_float_as_hex(&b);
+    print_float_as_hex(&r);
+}
+
+// Вычитание. Первый операнд отрицательный, второй - положительный.
+// Пример 2.
+// NOTE: пример был добавлен, поскольку обнаружилась проблема с вычислением знака в FSUB32 в float32avr.
+void fsub_case_2() {
+    float a = -12.0f;
+    float b = 14.0f;
+    float r = a - b;
+
+    std::cout << std::fixed << std::setprecision(150) << "a=" << a << std::endl;
+    std::cout << std::fixed << std::setprecision(150) << "b=" << b << std::endl;
+    std::cout << std::fixed << std::setprecision(150) << "r=" << r << std::endl;
+
+    std::cout << "subnormal: " << std::boolalpha << !std::isnormal(r) << std::endl;
+
+    std::cout << std::endl;
+
+    print_float_as_hex(&a);
+    print_float_as_hex(&b);
+    print_float_as_hex(&r);
+}
+
 // Алгебраическое сложение.
 // Проверка механики свопа, когда первый аргумент по модулю меньше второго.
 void fadd_swap() {
@@ -4405,6 +4447,9 @@ int main() {
     //add_case_neg_33();
     //add_case_neg_34();
     //add_case_neg_36();
+
+    //fsub_case_1();
+    fsub_case_2();
 
     //fadd_swap();
 
