@@ -1730,9 +1730,9 @@ void add_case_42() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 0.
-void sub_case_0() {
+void add_case_neg_0() {
     float a = 1.99999988079071044921875f;
     float b = -1.99999988079071044921875f;
     float r = a + b;
@@ -1750,9 +1750,9 @@ void sub_case_0() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 1.
-void sub_case_1() {
+void add_case_neg_1() {
     float a = 1.00000011920928955078125f * powf(2, -126);
     float b = -1.0f * powf(2, -126);
     float r = a + b;
@@ -1770,9 +1770,9 @@ void sub_case_1() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 2.
-void sub_case_2() {
+void add_case_neg_2() {
     float a = 1.99999988079071044921875f * powf(2, -125);
     float b = -1.0f * powf(2, -125);
     float r = a + b;
@@ -1790,9 +1790,9 @@ void sub_case_2() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 4.
-void sub_case_4() {
+void add_case_neg_4() {
     float a = 1.0f * powf(2, -102);
     float b = -1.99999988079071044921875f * powf(2, -103);
     float r = a + b;
@@ -1810,9 +1810,9 @@ void sub_case_4() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 5.
-void sub_case_5() {
+void add_case_neg_5() {
     float a = 1.5000002384185791015625f;
     float b = -1.00000011920928955078125f * powf(2, -1);
     float r = a + b;
@@ -1830,9 +1830,9 @@ void sub_case_5() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 6.
-void sub_case_6() {
+void add_case_neg_6() {
     float a = 1.50000011920928955078125f;
     float b = -1.00000011920928955078125f * powf(2, -1);
     float r = a + b;
@@ -1850,9 +1850,9 @@ void sub_case_6() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 8.
-void sub_case_8() {
+void add_case_neg_8() {
     float a = 1.0f * powf(2, 127);
     float b = -1.93750011920928955078125f * powf(2, 101);
     float r = a + b;
@@ -1870,9 +1870,9 @@ void sub_case_8() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 10.
-void sub_case_10() {
+void add_case_neg_10() {
     float a = 1.0f * powf(2, -102);
     float b = -1.48437511920928955078125f * powf(2, -126);
     float r = a + b;
@@ -1890,9 +1890,9 @@ void sub_case_10() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 12.
-void sub_case_12() {
+void add_case_neg_12() {
     float a = 1.0f * powf(2, -101);
     float b = -1.48437511920928955078125f * powf(2, -126);
     float r = a + b;
@@ -1910,9 +1910,9 @@ void sub_case_12() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 20.
-void sub_case_20() {
+void add_case_neg_20() {
     float a = 1.0f;
     float b = -1.0f * powf(2, -25);
     float r = a + b;
@@ -1930,9 +1930,9 @@ void sub_case_20() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 33.
-void sub_case_33() {
+void add_case_neg_33() {
     float a = 1.5f;
     float b = -1.0f * powf(2, -31);
     float r = a + b;
@@ -1950,9 +1950,9 @@ void sub_case_33() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 34.
-void sub_case_34() {
+void add_case_neg_34() {
     float a = 1.0f;
     float b = -1.0f * powf(2, -32);
     float r = a + b;
@@ -1970,9 +1970,9 @@ void sub_case_34() {
     print_float_as_hex(&r);
 }
 
-// Вычитание.
+// Алгебраическое сложение. Второй операнд отрицательный.
 // Ветка 36.
-void sub_case_36() {
+void add_case_neg_36() {
     float a = -10.0f;
     float b = 5.0f;
     float r = a + b;
@@ -4392,19 +4392,19 @@ int main() {
     //add_case_42();
 
     // Алгебраическое сложение: разные знаки.
-    //sub_case_0();
-    //sub_case_1();
-    //sub_case_2();
-    //sub_case_4();
-    //sub_case_5();
-    //sub_case_6();
-    //sub_case_8();
-    //sub_case_10();
-    //sub_case_12();
-    //sub_case_20();
-    //sub_case_33();
-    //sub_case_34();
-    //sub_case_36();
+    //add_case_neg_0();
+    //add_case_neg_1();
+    //add_case_neg_2();
+    //add_case_neg_4();
+    //add_case_neg_5();
+    //add_case_neg_6();
+    //add_case_neg_8();
+    //add_case_neg_10();
+    //add_case_neg_12();
+    //add_case_neg_20();
+    //add_case_neg_33();
+    //add_case_neg_34();
+    //add_case_neg_36();
 
     //fadd_swap();
 
@@ -4477,7 +4477,7 @@ int main() {
     //calculator_workflow_test_21();
     //calculator_workflow_test_22();
     //calculator_workflow_test_23();
-    calculator_workflow_test_24();
+    //calculator_workflow_test_24();
 
     // Тесты для ftoae.
     //ftoae_case_1();
