@@ -1,8 +1,10 @@
 ﻿# Float32AVRTest
-Здесь собраны эталонные примеры вычислений с плавающей точкой, результаты которых будут сверяться с кастомной программной эмуляцией плавающей точки для AVR из [*этого репозитория*](https://github.com/igor-240340/Float32AVR).
+This repository contains reference examples of floating-point calculations. The results from these examples will be compared against a custom software floating-point emulation for AVR from [this repo](https://github.com/igor-240340/Float32AVR).
 
-Идея в том, что в качестве эталонной реализации мы берем аппаратную реализацию IEEE 754 на декстопе, вычисляем референсные результаты и сверяем их с результатами, которые возвращает наша кастомная программная эмуляция.
+The idea is to use the hardware implementation of IEEE 754 on a desktop as the reference. We calculate reference results and compare them with those returned by our custom software emulation.
 
-Нумерация примеров перекрестная: примеру с номером 1 в этом репозитории соответствует пример с номером 1 в Float32AVR и пример с номером 1 в майндмапе с анализом возможных кейсов (добавить ссылку).
+The numbering of examples is cross-referenced: example number 1 in this repository corresponds to example number 1 in Float32AVR and to example number 1 in the mind map analyzing possible cases (the mind map files with extension `*.xmind` can be found in docs directory in the repo of the main project Hardware Calculator From Scratch [here](https://github.com/igor-240340/HardwareCalculatorFromScratch/tree/en/docs/Basic%20Research%20Notes)).
 
-Единственный момент - Float32AVR не поддерживает inf, nan и денормализованные числа, поэтому в примерах, в которых аппаратная реализация плавающей точки возвращает inf или nan, Float32AVR выбросит исключение, а там, где возвращается денормализованное число - вернет ноль.
+One caveat: Float32AVR does not support `inf`, `nan`, or denormalized numbers. Therefore:
+- For examples where the hardware floating-point implementation returns `inf` or `nan`, Float32AVR will throw an exception.  
+- For cases where a denormalized number is returned, Float32AVR will return zero.
