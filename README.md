@@ -1,4 +1,6 @@
 ﻿# Float32AVRTest
+Original Russian version of README.md is here in [dev](https://github.com/igor-240340/Float32AVRTest/tree/dev) branch.
+
 This repository contains reference examples of floating-point calculations. The results from these examples will be compared against a custom software floating-point emulation for AVR from [this repo](https://github.com/igor-240340/Float32AVR).
 
 The idea is to use the hardware implementation of IEEE 754 on a desktop as the reference. We calculate reference results and compare them with those returned by our custom software emulation.
